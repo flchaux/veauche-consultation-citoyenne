@@ -25,4 +25,58 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+// Forms table
+export const forms = mysqlTable("forms", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  userId: int("userId").notNull(),
+  isActive: int("isActive").default(1).notNull(), // 1 = active, 0 = inactive
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Form = typeof forms.$inferSelect;
+export type InsertForm = typeof forms.$inferInsert;
+
+// Questions table
+export const questions = mysqlTable("questions", {
+  id: int("id").autoincrement().primaryKey(),
+  formId: int("formId").notNull(),
+  questionText: text("questionText").notNull(),
+  questionType: mysqlEnum("questionType", ["text", "textarea", "radio", "checkbox", "select"]).notNull(),
+  options: text("options"), // JSON string for radio/checkbox/select options
+  isRequired: int("isRequired").default(1).notNull(), // 1 = required, 0 = optional
+  orderIndex: int("orderIndex").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Question = typeof questions.$inferSelect;
+export type InsertQuestion = typeof questions.$inferInsert;
+
+// Responses table - stores individual form submissions
+export const responses = mysqlTable("responses", {
+  id: int("id").autoincrement().primaryKey(),
+  formId: int("formId").notNull(),
+  sessionId: varchar("sessionId", { length: 255 }).notNull(), // Unique identifier for each form submission session
+  isCompleted: int("isCompleted").default(0).notNull(), // 1 = completed, 0 = in progress
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Response = typeof responses.$inferSelect;
+export type InsertResponse = typeof responses.$inferInsert;
+
+// Answers table - stores individual question answers
+export const answers = mysqlTable("answers", {
+  id: int("id").autoincrement().primaryKey(),
+  responseId: int("responseId").notNull(),
+  questionId: int("questionId").notNull(),
+  answerText: text("answerText"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Answer = typeof answers.$inferSelect;
+export type InsertAnswer = typeof answers.$inferInsert;

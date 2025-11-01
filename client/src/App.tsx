@@ -5,14 +5,20 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import Admin from "./pages/Admin";
+import FormEditor from "./pages/FormEditor";
+import FormView from "./pages/FormView";
+import Analytics from "./pages/Analytics";
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path="/admin" component={Admin} />
+      <Route path="/admin/form/:formId" component={FormEditor} />
+      <Route path="/admin/analytics/:formId" component={Analytics} />
+      <Route path="/form/:formId" component={FormView} />
       <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
   );
