@@ -94,3 +94,7 @@
 - [x] Diagnostiquer pourquoi le schéma n'est pas créé (drizzle.config.ts utilisait "mysql" au lieu de "postgresql")
 - [x] Générer et appliquer les migrations Drizzle
 - [x] Vérifier que les tables sont créées correctement
+
+## Ajout du favicon
+- [x] Copier le favicon dans le dossier public
+- [x] Mettre à jour le HTML pour référencer le nouveau favicon
