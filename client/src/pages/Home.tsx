@@ -201,10 +201,10 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-amber-50">
       {/* Bannière en dehors du layout sur mobile */}
       <div className="md:hidden w-full">
-        <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full shadow-md max-h-32 object-cover" />
+        <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full shadow-md object-cover" />
       </div>
       
-      <div className="flex items-center justify-center p-0 md:p-4 min-h-screen md:min-h-0">
+      <div className="flex items-center justify-center p-0 md:p-4 md:min-h-screen">
         <div className="max-w-4xl w-full bg-white md:rounded-lg shadow-lg p-4 md:p-8 border-t-4 md:border-t-4 border-t-0 border-[#0D6EB2]">
           {/* Header avec logo et image pour desktop */}
           <div className="mb-4 md:mb-8">

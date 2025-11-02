@@ -73,3 +73,7 @@
 ## Corrections urgentes
 - [x] Sortir la bannière du layout pour la mettre en full width sur mobile
 - [x] Corriger les labels des checkboxes qui ne sont plus cliquables
+
+## Ajustements bannière
+- [x] Remplacer la bannière par la nouvelle version
+- [x] Réduire la marge verticale entre la bannière et la question sur mobile (problème de min-height)
