@@ -1,64 +1,68 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { integer, pgEnum, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 /**
  * Core user table backing auth flow.
  * Extend this file with additional tables as your product grows.
  * Columns use camelCase to match both database fields and generated types.
  */
-export const users = mysqlTable("users", {
+
+export const roleEnum = pgEnum('role', ['user', 'admin']);
+
+export const users = pgTable("users", {
   /**
    * Surrogate primary key. Auto-incremented numeric value managed by the database.
    * Use this for relations between tables.
    */
-  id: int("id").autoincrement().primaryKey(),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
-  role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
+  role: roleEnum("role").default('user').notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
 });
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// Questions table - un seul formulaire, donc pas besoin de formId
-export const questions = mysqlTable("questions", {
-  id: int("id").autoincrement().primaryKey(),
+// Question types enum
+export const questionTypeEnum = pgEnum('question_type', ['text', 'textarea', 'radio', 'checkbox', 'select']);
+
+// Questions table
+export const questions = pgTable("questions", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   questionText: text("questionText").notNull(),
-  questionType: mysqlEnum("questionType", ["text", "textarea", "radio", "checkbox", "select"]).notNull(),
-  options: text("options"), // JSON array for radio/checkbox/select
-  isRequired: int("isRequired").default(0).notNull(),
-  orderIndex: int("orderIndex").notNull(),
+  questionType: questionTypeEnum("questionType").notNull(),
+  options: text("options"), // JSON string for radio/checkbox/select options
+  isRequired: integer("isRequired").default(1).notNull(), // 1 = required, 0 = optional
+  orderIndex: integer("orderIndex").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
 export type Question = typeof questions.$inferSelect;
 export type InsertQuestion = typeof questions.$inferInsert;
 
-// Responses table - stores individual form submissions
-export const responses = mysqlTable("responses", {
-  id: int("id").autoincrement().primaryKey(),
-  sessionId: varchar("sessionId", { length: 255 }).notNull(), // Pour suivre les réponses d'un même utilisateur
-  isCompleted: int("isCompleted").default(0).notNull(),
+// Responses table (one response = one form submission)
+export const responses = pgTable("responses", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  sessionId: varchar("sessionId", { length: 255 }).notNull(), // Unique identifier for each form submission
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  completedAt: timestamp("completedAt"),
 });
 
 export type Response = typeof responses.$inferSelect;
 export type InsertResponse = typeof responses.$inferInsert;
 
-// Answers table - stores individual question answers
-export const answers = mysqlTable("answers", {
-  id: int("id").autoincrement().primaryKey(),
-  responseId: int("responseId").notNull(),
-  questionId: int("questionId").notNull(),
+// Answers table (one answer per question per response)
+export const answers = pgTable("answers", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  responseId: integer("responseId").notNull().references(() => responses.id, { onDelete: 'cascade' }),
+  questionId: integer("questionId").notNull().references(() => questions.id, { onDelete: 'cascade' }),
   answerText: text("answerText"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type Answer = typeof answers.$inferSelect;

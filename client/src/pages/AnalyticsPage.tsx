@@ -25,7 +25,7 @@ export default function AnalyticsPage() {
   const { data: allAnswers = [] } = trpc.answers.getAll.useQuery(undefined, { enabled: !!user });
 
   const totalResponses = responses.length;
-  const completedResponses = responses.filter(r => r.isCompleted === 1).length;
+  const completedResponses = responses.filter(r => r.completedAt !== null).length;
   const inProgressResponses = totalResponses - completedResponses;
   const completionRate = totalResponses > 0 ? Math.round((completedResponses / totalResponses) * 100) : 0;
 
@@ -34,7 +34,7 @@ export default function AnalyticsPage() {
       const row: Record<string, string> = {
         "ID Réponse": response.id.toString(),
         "Date": new Date(response.createdAt).toLocaleString("fr-FR"),
-        "Statut": response.isCompleted === 1 ? "Complété" : "En cours",
+        "Statut": response.completedAt !== null ? "Completé" : "En cours",
       };
 
       questions.forEach((question) => {
@@ -201,7 +201,7 @@ export default function AnalyticsPage() {
                       </p>
                     </div>
                     <div>
-                      {response.isCompleted === 1 ? (
+                      {response.completedAt !== null ? (
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                           Complété
                         </span>

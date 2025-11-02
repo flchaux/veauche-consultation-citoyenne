@@ -77,3 +77,9 @@
 ## Ajustements bannière
 - [x] Remplacer la bannière par la nouvelle version
 - [x] Réduire la marge verticale entre la bannière et la question sur mobile (problème de min-height)
+
+## Migration PostgreSQL
+- [x] Remplacer le driver MySQL par PostgreSQL
+- [x] Adapter le schéma Drizzle pour PostgreSQL
+- [x] Mettre à jour les dépendances
+- [ ] Configurer DATABASE_URL PostgreSQL et tester la migration

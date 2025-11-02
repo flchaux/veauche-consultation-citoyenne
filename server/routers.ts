@@ -81,11 +81,7 @@ export const appRouter = router({
       .query(async ({ input }) => {
         let response = await db.getResponseBySessionId(input.sessionId);
         if (!response) {
-          await db.createResponse({
-            sessionId: input.sessionId,
-            isCompleted: 0,
-          });
-          response = await db.getResponseBySessionId(input.sessionId);
+          response = await db.createResponse(input.sessionId);
         }
         return response;
       }),
@@ -97,7 +93,7 @@ export const appRouter = router({
     complete: publicProcedure
       .input(z.object({ responseId: z.number() }))
       .mutation(async ({ input }) => {
-        await db.updateResponse(input.responseId, { isCompleted: 1 });
+        await db.completeResponse(input.responseId);
         return { success: true };
       }),
   }),
@@ -111,12 +107,7 @@ export const appRouter = router({
         answerText: z.string(),
       }))
       .mutation(async ({ input }) => {
-        const existing = await db.getAnswerByResponseAndQuestion(input.responseId, input.questionId);
-        if (existing) {
-          await db.updateAnswer(existing.id, { answerText: input.answerText });
-        } else {
-          await db.createAnswer(input);
-        }
+        await db.saveAnswer(input);
         return { success: true };
       }),
     
