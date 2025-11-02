@@ -22,3 +22,12 @@
 - [x] Appliquer la palette de couleurs personnalisée dans index.css
 - [x] Créer des composants réutilisables avec le thème personnalisé
 - [x] Assurer la responsivité sur mobile et desktop
+
+## Modifications Architecture
+- [x] Supprimer la gestion multi-formulaires (un seul formulaire unique)
+- [x] Modifier la page d'accueil pour afficher directement le formulaire
+- [x] Masquer le back-office sur une URL spécifique (/admin-secret)
+- [x] Intégrer le logo Veauche Mérite Mieux
+- [x] Intégrer le header de consultation citoyenne
+- [x] Créer un design "papier" pour le formulaire
+- [x] Adapter la palette de couleurs au branding de la ville

@@ -25,31 +25,15 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// Forms table
-export const forms = mysqlTable("forms", {
-  id: int("id").autoincrement().primaryKey(),
-  title: varchar("title", { length: 255 }).notNull(),
-  description: text("description"),
-  userId: int("userId").notNull(),
-  isActive: int("isActive").default(1).notNull(), // 1 = active, 0 = inactive
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
-export type Form = typeof forms.$inferSelect;
-export type InsertForm = typeof forms.$inferInsert;
-
-// Questions table
+// Questions table - un seul formulaire, donc pas besoin de formId
 export const questions = mysqlTable("questions", {
   id: int("id").autoincrement().primaryKey(),
-  formId: int("formId").notNull(),
   questionText: text("questionText").notNull(),
   questionType: mysqlEnum("questionType", ["text", "textarea", "radio", "checkbox", "select"]).notNull(),
-  options: text("options"), // JSON string for radio/checkbox/select options
-  isRequired: int("isRequired").default(1).notNull(), // 1 = required, 0 = optional
+  options: text("options"), // JSON array for radio/checkbox/select
+  isRequired: int("isRequired").default(0).notNull(),
   orderIndex: int("orderIndex").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type Question = typeof questions.$inferSelect;
@@ -58,9 +42,8 @@ export type InsertQuestion = typeof questions.$inferInsert;
 // Responses table - stores individual form submissions
 export const responses = mysqlTable("responses", {
   id: int("id").autoincrement().primaryKey(),
-  formId: int("formId").notNull(),
-  sessionId: varchar("sessionId", { length: 255 }).notNull(), // Unique identifier for each form submission session
-  isCompleted: int("isCompleted").default(0).notNull(), // 1 = completed, 0 = in progress
+  sessionId: varchar("sessionId", { length: 255 }).notNull(), // Pour suivre les réponses d'un même utilisateur
+  isCompleted: int("isCompleted").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

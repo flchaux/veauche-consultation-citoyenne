@@ -15,6 +15,20 @@
       "when": 1762033746663,
       "tag": "0001_cold_sister_grimm",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1762068158481,
+      "tag": "0002_right_lorna_dane",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1762068228736,
+      "tag": "0003_long_norman_osborn",
+      "breakpoints": true
     }
   ]
 }

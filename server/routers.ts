@@ -1,12 +1,11 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -19,65 +18,27 @@ export const appRouter = router({
     }),
   }),
 
-  forms: router({
-    list: protectedProcedure.query(async ({ ctx }) => {
-      return db.getAllForms(ctx.user.id);
-    }),
-    getById: publicProcedure
-      .input(z.object({ formId: z.number() }))
-      .query(async ({ input }) => {
-        return db.getFormById(input.formId);
-      }),
-    create: protectedProcedure
-      .input(z.object({ title: z.string(), description: z.string().optional() }))
-      .mutation(async ({ ctx, input }) => {
-        const formId = await db.createForm({
-          title: input.title,
-          description: input.description,
-          userId: ctx.user.id,
-        });
-        return { formId };
-      }),
-    update: protectedProcedure
-      .input(z.object({ formId: z.number(), title: z.string().optional(), description: z.string().optional(), isActive: z.number().optional() }))
-      .mutation(async ({ input }) => {
-        await db.updateForm(input.formId, {
-          title: input.title,
-          description: input.description,
-          isActive: input.isActive,
-        });
-        return { success: true };
-      }),
-    delete: protectedProcedure
-      .input(z.object({ formId: z.number() }))
-      .mutation(async ({ input }) => {
-        await db.deleteForm(input.formId);
-        return { success: true };
-      }),
-  }),
-
+  // Questions management (admin only)
   questions: router({
-    listByForm: publicProcedure
-      .input(z.object({ formId: z.number() }))
-      .query(async ({ input }) => {
-        return db.getQuestionsByFormId(input.formId);
-      }),
+    list: publicProcedure.query(async () => {
+      return await db.getAllQuestions();
+    }),
+    
     create: protectedProcedure
       .input(z.object({
-        formId: z.number(),
         questionText: z.string(),
         questionType: z.enum(["text", "textarea", "radio", "checkbox", "select"]),
         options: z.string().optional(),
-        isRequired: z.number().optional(),
+        isRequired: z.number(),
         orderIndex: z.number(),
       }))
       .mutation(async ({ input }) => {
-        const questionId = await db.createQuestion(input);
-        return { questionId };
+        return await db.createQuestion(input);
       }),
+    
     update: protectedProcedure
       .input(z.object({
-        questionId: z.number(),
+        id: z.number(),
         questionText: z.string().optional(),
         questionType: z.enum(["text", "textarea", "radio", "checkbox", "select"]).optional(),
         options: z.string().optional(),
@@ -85,49 +46,49 @@ export const appRouter = router({
         orderIndex: z.number().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { questionId, ...updates } = input;
-        await db.updateQuestion(questionId, updates);
+        const { id, ...data } = input;
+        await db.updateQuestion(id, data);
         return { success: true };
       }),
+    
     delete: protectedProcedure
-      .input(z.object({ questionId: z.number() }))
+      .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
-        await db.deleteQuestion(input.questionId);
+        await db.deleteQuestion(input.id);
         return { success: true };
       }),
   }),
 
+  // Responses management
   responses: router({
-    listByForm: protectedProcedure
-      .input(z.object({ formId: z.number() }))
-      .query(async ({ input }) => {
-        return db.getResponsesByFormId(input.formId);
-      }),
-    getBySessionId: publicProcedure
+    getOrCreate: publicProcedure
       .input(z.object({ sessionId: z.string() }))
       .query(async ({ input }) => {
-        return db.getResponseBySessionId(input.sessionId);
+        let response = await db.getResponseBySessionId(input.sessionId);
+        if (!response) {
+          await db.createResponse({
+            sessionId: input.sessionId,
+            isCompleted: 0,
+          });
+          response = await db.getResponseBySessionId(input.sessionId);
+        }
+        return response;
       }),
-    create: publicProcedure
-      .input(z.object({ formId: z.number(), sessionId: z.string() }))
+    
+    list: protectedProcedure.query(async () => {
+      return await db.getAllResponses();
+    }),
+    
+    complete: publicProcedure
+      .input(z.object({ responseId: z.number() }))
       .mutation(async ({ input }) => {
-        const responseId = await db.createResponse(input);
-        return { responseId };
-      }),
-    updateCompletion: publicProcedure
-      .input(z.object({ responseId: z.number(), isCompleted: z.number() }))
-      .mutation(async ({ input }) => {
-        await db.updateResponse(input.responseId, { isCompleted: input.isCompleted });
+        await db.updateResponse(input.responseId, { isCompleted: 1 });
         return { success: true };
       }),
   }),
 
+  // Answers management
   answers: router({
-    listByResponse: protectedProcedure
-      .input(z.object({ responseId: z.number() }))
-      .query(async ({ input }) => {
-        return db.getAnswersByResponseId(input.responseId);
-      }),
     save: publicProcedure
       .input(z.object({
         responseId: z.number(),
@@ -135,18 +96,24 @@ export const appRouter = router({
         answerText: z.string(),
       }))
       .mutation(async ({ input }) => {
-        // Check if answer already exists
         const existing = await db.getAnswerByResponseAndQuestion(input.responseId, input.questionId);
         if (existing) {
-          // Update existing answer
           await db.updateAnswer(existing.id, { answerText: input.answerText });
-          return { answerId: existing.id };
         } else {
-          // Create new answer
-          const answerId = await db.createAnswer(input);
-          return { answerId };
+          await db.createAnswer(input);
         }
+        return { success: true };
       }),
+    
+    getByResponse: publicProcedure
+      .input(z.object({ responseId: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getAnswersByResponseId(input.responseId);
+      }),
+    
+    getAll: protectedProcedure.query(async () => {
+      return await db.getAllAnswers();
+    }),
   }),
 });
 

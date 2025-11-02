@@ -1,37 +1,33 @@
-# Guide Utilisateur - Formulaire Multi-Pages avec Back-Office
+# Guide Utilisateur - Consultation Citoyenne Veauche Mérite Mieux
 
 ## Informations Générales
 
-**Objectif**: Créer des formulaires multi-pages élégants, collecter des réponses en temps réel et analyser les résultats avec des statistiques détaillées.
+**Objectif**: Recueillir l'avis des citoyens de Veauche à travers un formulaire de consultation en ligne, avec une navigation fluide question par question et une sauvegarde automatique des réponses.
 
-**Accès**: Connexion requise via Google OAuth pour accéder au back-office. Les formulaires publics sont accessibles sans connexion.
+**Accès**: Le formulaire public est accessible à tous sans connexion. Le back-office administrateur nécessite une connexion Google OAuth et est accessible uniquement via une URL spécifique.
 
 ## Powered by Manus
 
-Cette application est construite avec une stack technologique moderne et performante. Le frontend utilise **React 19** avec **TypeScript** pour une expérience utilisateur fluide et sécurisée, accompagné de **Tailwind CSS 4** pour un design responsive et personnalisable. Le backend repose sur **Express 4** avec **tRPC 11** pour une communication type-safe entre le client et le serveur. La base de données **MySQL/TiDB** via **Drizzle ORM** assure la persistance des données. L'authentification est gérée par **Manus OAuth** avec Google. Le déploiement bénéficie d'une infrastructure auto-scalable avec CDN global pour des performances optimales partout dans le monde.
+Cette application de consultation citoyenne repose sur une architecture web moderne et performante. Le frontend utilise **React 19** avec **TypeScript** pour une interface utilisateur réactive et sécurisée, stylisée avec **Tailwind CSS 4** pour un design responsive adapté à tous les écrans. Le backend est construit avec **Express 4** et **tRPC 11** pour une communication type-safe entre client et serveur. La persistance des données est assurée par une base de données **MySQL/TiDB** via **Drizzle ORM**. L'authentification administrateur s'appuie sur **Manus OAuth** avec Google. Le déploiement bénéficie d'une infrastructure auto-scalable avec CDN global pour des temps de chargement optimaux partout dans le monde.
 
 ## Utiliser Votre Site Web
 
-### Créer un formulaire
+### Répondre au formulaire
 
-Après connexion, cliquez sur "Nouveau formulaire" depuis la page "Mes Formulaires". Remplissez le titre et la description, puis cliquez sur "Créer". Vous accédez ensuite à la gestion des questions en cliquant sur "Gérer".
+Accédez à la page d'accueil du site. Vous verrez le logo "Veauche Mérite Mieux" et le header de consultation citoyenne. Lisez la question affichée et sélectionnez votre réponse parmi les options proposées. Votre réponse est automatiquement sauvegardée dès que vous la sélectionnez. Cliquez sur "Suivant" pour passer à la question suivante, ou "Précédent" pour revenir en arrière. Une barre de progression indique votre avancement. À la dernière question, cliquez sur "Terminer" pour soumettre définitivement vos réponses.
 
-### Ajouter des questions
+### Gérer les questions (administrateur)
 
-Dans l'éditeur de formulaire, cliquez sur "Ajouter une question". Saisissez votre question, choisissez le type de réponse (texte court, texte long, choix unique, choix multiples ou liste déroulante). Pour les questions à choix, ajoutez les options une par ligne. Cochez "Question obligatoire" si nécessaire, puis cliquez sur "Ajouter".
+Connectez-vous en accédant à l'URL `/admin-secret` puis authentifiez-vous avec Google. Une fois connecté, cliquez sur "Ajouter une question". Saisissez le texte de votre question, choisissez le type de réponse (texte court, texte long, choix unique, choix multiples ou liste déroulante). Pour les questions à choix, entrez les options une par ligne dans le champ prévu. Cochez "Question obligatoire" si nécessaire, puis cliquez sur "Ajouter". Les questions apparaissent dans l'ordre de création. Pour supprimer une question, cliquez sur l'icône corbeille à droite de la question.
 
-### Partager le formulaire
+### Consulter les statistiques (administrateur)
 
-Une fois vos questions créées, copiez le lien du formulaire affiché en bas de la page. Partagez ce lien avec vos répondants. Ils verront une question à la fois avec une barre de progression. Chaque réponse est automatiquement sauvegardée.
-
-### Analyser les résultats
-
-Cliquez sur "Voir les statistiques" depuis l'éditeur de formulaire ou "Statistiques" dans le menu. Vous verrez le nombre total de réponses, le taux de complétion, et le funnel de conversion par question. Cliquez sur "Exporter en XLSX" pour télécharger toutes les réponses au format Excel.
+Depuis le back-office, accédez à la page "Statistiques" via le menu latéral ou l'URL `/admin-secret/analytics`. Vous verrez le nombre total de réponses, le taux de complétion, et le nombre de réponses en cours. Le funnel de conversion affiche le pourcentage de répondants ayant répondu à chaque question. Cliquez sur "Exporter en XLSX" pour télécharger toutes les réponses au format Excel avec une colonne par question.
 
 ## Gérer Votre Site Web
 
-Utilisez le panneau **Settings** dans l'interface de gestion pour modifier le titre et le logo de l'application. Le panneau **Dashboard** affiche les statistiques de trafic et la visibilité du site. Le panneau **Database** permet de consulter directement les données stockées. Pour gérer les formulaires, utilisez les boutons "Voir", "Gérer" et l'icône de suppression sur chaque carte de formulaire.
+Utilisez le panneau **Settings** dans l'interface de gestion pour modifier le titre et le logo de l'application. Le panneau **Dashboard** affiche les statistiques de trafic et la visibilité du site. Le panneau **Database** permet de consulter directement les données stockées. Pour accéder au back-office, utilisez l'URL spécifique `/admin-secret` qui n'est pas visible publiquement.
 
 ## Prochaines Étapes
 
-Parlez à Manus AI à tout moment pour demander des modifications ou ajouter des fonctionnalités. Commencez par créer votre premier formulaire et partagez-le pour collecter vos premières réponses.
+Parlez à Manus AI à tout moment pour demander des modifications ou ajouter des fonctionnalités. Commencez par créer vos premières questions de consultation et partagez le lien du formulaire avec les citoyens de Veauche pour recueillir leurs avis.

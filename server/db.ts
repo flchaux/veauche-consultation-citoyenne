@@ -1,6 +1,6 @@
-import { eq, and } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, forms, InsertForm, questions, InsertQuestion, responses, InsertResponse, answers, InsertAnswer } from "../drizzle/schema";
+import { InsertUser, users, questions, InsertQuestion, responses, InsertResponse, answers, InsertAnswer } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,75 +89,49 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// Forms queries
-export async function getAllForms(userId: number) {
+// Questions functions
+export async function getAllQuestions() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(forms).where(eq(forms.userId, userId));
+  
+  return await db.select().from(questions).orderBy(questions.orderIndex);
 }
 
-export async function getFormById(formId: number) {
+export async function getQuestionById(id: number) {
   const db = await getDb();
   if (!db) return undefined;
-  const result = await db.select().from(forms).where(eq(forms.id, formId)).limit(1);
+  
+  const result = await db.select().from(questions).where(eq(questions.id, id)).limit(1);
   return result.length > 0 ? result[0] : undefined;
-}
-
-export async function createForm(form: InsertForm) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  const result = await db.insert(forms).values(form);
-  return result[0].insertId;
-}
-
-export async function updateForm(formId: number, form: Partial<InsertForm>) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  await db.update(forms).set(form).where(eq(forms.id, formId));
-}
-
-export async function deleteForm(formId: number) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  await db.delete(forms).where(eq(forms.id, formId));
-}
-
-// Questions queries
-export async function getQuestionsByFormId(formId: number) {
-  const db = await getDb();
-  if (!db) return [];
-  return db.select().from(questions).where(eq(questions.formId, formId)).orderBy(questions.orderIndex);
 }
 
 export async function createQuestion(question: InsertQuestion) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  
   const result = await db.insert(questions).values(question);
-  return result[0].insertId;
+  return result;
 }
 
-export async function updateQuestion(questionId: number, question: Partial<InsertQuestion>) {
+export async function updateQuestion(id: number, question: Partial<InsertQuestion>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  await db.update(questions).set(question).where(eq(questions.id, questionId));
+  
+  await db.update(questions).set(question).where(eq(questions.id, id));
 }
 
-export async function deleteQuestion(questionId: number) {
+export async function deleteQuestion(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  await db.delete(questions).where(eq(questions.id, questionId));
+  
+  await db.delete(questions).where(eq(questions.id, id));
 }
 
-// Responses queries
-export async function getResponsesByFormId(formId: number) {
-  const db = await getDb();
-  if (!db) return [];
-  return db.select().from(responses).where(eq(responses.formId, formId));
-}
-
+// Responses functions
 export async function getResponseBySessionId(sessionId: string) {
   const db = await getDb();
   if (!db) return undefined;
+  
   const result = await db.select().from(responses).where(eq(responses.sessionId, sessionId)).limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
@@ -165,41 +139,64 @@ export async function getResponseBySessionId(sessionId: string) {
 export async function createResponse(response: InsertResponse) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  
   const result = await db.insert(responses).values(response);
-  return result[0].insertId;
+  return result;
 }
 
-export async function updateResponse(responseId: number, response: Partial<InsertResponse>) {
+export async function updateResponse(id: number, response: Partial<InsertResponse>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  await db.update(responses).set(response).where(eq(responses.id, responseId));
+  
+  await db.update(responses).set(response).where(eq(responses.id, id));
 }
 
-// Answers queries
+export async function getAllResponses() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db.select().from(responses).orderBy(desc(responses.createdAt));
+}
+
+// Answers functions
 export async function getAnswersByResponseId(responseId: number) {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(answers).where(eq(answers.responseId, responseId));
-}
-
-export async function createAnswer(answer: InsertAnswer) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  const result = await db.insert(answers).values(answer);
-  return result[0].insertId;
-}
-
-export async function updateAnswer(answerId: number, answer: Partial<InsertAnswer>) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  await db.update(answers).set(answer).where(eq(answers.id, answerId));
+  
+  return await db.select().from(answers).where(eq(answers.responseId, responseId));
 }
 
 export async function getAnswerByResponseAndQuestion(responseId: number, questionId: number) {
   const db = await getDb();
   if (!db) return undefined;
-  const result = await db.select().from(answers)
+  
+  const result = await db
+    .select()
+    .from(answers)
     .where(and(eq(answers.responseId, responseId), eq(answers.questionId, questionId)))
     .limit(1);
+  
   return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createAnswer(answer: InsertAnswer) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(answers).values(answer);
+  return result;
+}
+
+export async function updateAnswer(id: number, answer: Partial<InsertAnswer>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(answers).set(answer).where(eq(answers.id, id));
+}
+
+export async function getAllAnswers() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db.select().from(answers);
 }
