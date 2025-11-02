@@ -165,13 +165,12 @@ export default function Home() {
                   onCheckedChange={() => toggleOption(option)}
                   className="border-[#0D6EB2] min-w-[20px] min-h-[20px]"
                 />
-                <Label 
+                <label 
                   htmlFor={`checkbox-${index}`} 
                   className="text-base md:text-lg cursor-pointer flex-1 leading-snug"
-                  onClick={() => toggleOption(option)}
                 >
                   {option}
-                </Label>
+                </label>
               </div>
             ))}
           </div>
@@ -199,13 +198,19 @@ export default function Home() {
   };
 
   return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-0 md:p-4">
-      <div className="max-w-4xl w-full bg-white md:rounded-lg shadow-lg p-4 md:p-8 border-t-4 border-[#0D6EB2]">
-        {/* Header avec logo et image */}
-        <div className="mb-4 md:mb-8">
-          <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="hidden md:block h-24 mx-auto mb-6" />
-          <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-screen md:w-full md:rounded-lg shadow-md mb-3 md:mb-6 max-h-32 md:max-h-none object-cover -mx-4 md:mx-0 relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] md:left-0 md:right-0 md:ml-0 md:mr-0 md:relative" />
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-amber-50">
+      {/* Bannière en dehors du layout sur mobile */}
+      <div className="md:hidden w-full">
+        <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full shadow-md max-h-32 object-cover" />
+      </div>
+      
+      <div className="flex items-center justify-center p-0 md:p-4 min-h-screen md:min-h-0">
+        <div className="max-w-4xl w-full bg-white md:rounded-lg shadow-lg p-4 md:p-8 border-t-4 md:border-t-4 border-t-0 border-[#0D6EB2]">
+          {/* Header avec logo et image pour desktop */}
+          <div className="mb-4 md:mb-8">
+            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="hidden md:block h-24 mx-auto mb-6" />
+            <img src="/header-consultation.png" alt="Consultation citoyenne" className="hidden md:block w-full rounded-lg shadow-md mb-6 max-h-none object-cover" />
+          </div>
 
         {/* Barre de progression */}
         <div className="mb-4 md:mb-8 sticky top-0 bg-white py-2 -mx-4 md:mx-0 px-4 md:px-0 z-10 md:static">
@@ -264,6 +269,7 @@ export default function Home() {
             </Button>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

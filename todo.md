@@ -69,3 +69,7 @@
 
 ## Nouvelles modifications
 - [x] Agrandir le logo sur la page de remerciement
+
+## Corrections urgentes
+- [x] Sortir la bannière du layout pour la mettre en full width sur mobile
+- [x] Corriger les labels des checkboxes qui ne sont plus cliquables
