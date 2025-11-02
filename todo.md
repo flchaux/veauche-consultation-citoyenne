@@ -40,3 +40,14 @@
 
 ## Bugs à corriger
 - [x] Certaines options des QCM ne peuvent pas être sélectionnées (Cadre de vie, Jeunesse)
+
+## Améliorations mobile
+- [x] Optimiser la taille du logo et de l'en-tête sur mobile
+- [x] Augmenter la taille des zones de saisie (textarea, input)
+- [x] Agrandir les checkboxes et radio buttons (min 44x44px)
+- [x] Augmenter l'espacement entre les options
+- [x] Améliorer les boutons de navigation (plus larges et visibles)
+- [x] Fixer la barre de progression en haut lors du scroll
+- [x] Augmenter la taille de police des questions sur mobile
+- [x] Améliorer les zones cliquables (toute la ligne pour checkboxes)
+- [x] Ajouter des marges latérales adaptées sur mobile

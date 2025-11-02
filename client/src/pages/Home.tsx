@@ -66,13 +66,13 @@ export default function Home() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-4">
-        <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-12 text-center border-t-4 border-[#0D6EB2]">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-4 md:p-8">
+        <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-6 md:p-12 text-center border-t-4 border-[#0D6EB2]">
           <div className="mb-6 flex justify-center">
-            <CheckCircle2 className="w-20 h-20 text-[#0D6EB2]" />
+            <CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-[#0D6EB2]" />
           </div>
-          <h1 className="text-3xl font-bold text-[#0D6EB2] mb-4">Merci !</h1>
-          <p className="text-gray-600 text-lg">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#0D6EB2] mb-4">Merci !</h1>
+          <p className="text-gray-600 text-base md:text-lg">
             Votre réponse a été enregistrée avec succès.
           </p>
         </div>
@@ -82,11 +82,11 @@ export default function Home() {
 
   if (!currentQuestion || totalQuestions === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-4">
-        <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-8 border-t-4 border-[#0D6EB2]">
-          <div className="mb-8">
-            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-24 mx-auto mb-6" />
-            <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full rounded-lg shadow-md" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-4 md:p-8">
+        <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-6 md:p-8 border-t-4 border-[#0D6EB2]">
+          <div className="mb-6 md:mb-8">
+            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-16 md:h-24 mx-auto mb-4 md:mb-6" />
+            <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full rounded-lg shadow-md max-h-32 md:max-h-none object-cover" />
           </div>
           <p className="text-center text-gray-600">
             Aucune question disponible pour le moment.
@@ -112,7 +112,7 @@ export default function Home() {
           <Input
             value={currentAnswer}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            className="w-full text-lg p-4 border-2 border-gray-300 focus:border-[#0D6EB2] rounded"
+            className="w-full text-base md:text-lg p-3 md:p-4 border-2 border-gray-300 focus:border-[#0D6EB2] rounded min-h-[48px]"
             placeholder="Votre réponse..."
           />
         );
@@ -122,18 +122,18 @@ export default function Home() {
           <Textarea
             value={currentAnswer}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            className="w-full text-lg p-4 border-2 border-gray-300 focus:border-[#0D6EB2] rounded min-h-[150px]"
+            className="w-full text-base md:text-lg p-3 md:p-4 border-2 border-gray-300 focus:border-[#0D6EB2] rounded min-h-[120px] md:min-h-[150px]"
             placeholder="Votre réponse..."
           />
         );
 
       case "radio":
         return (
-          <RadioGroup value={currentAnswer} onValueChange={handleAnswerChange} className="space-y-4">
+          <RadioGroup value={currentAnswer} onValueChange={handleAnswerChange} className="space-y-3 md:space-y-4">
             {options.map((option: string, index: number) => (
-              <div key={index} className="flex items-center space-x-3 p-3 rounded hover:bg-gray-50 border border-gray-200">
-                <RadioGroupItem value={option} id={`option-${index}`} className="border-[#0D6EB2]" />
-                <Label htmlFor={`option-${index}`} className="text-lg cursor-pointer flex-1">
+              <div key={index} className="flex items-center space-x-3 p-4 md:p-3 rounded hover:bg-gray-50 border border-gray-200 min-h-[56px] md:min-h-0 cursor-pointer" onClick={() => handleAnswerChange(option)}>
+                <RadioGroupItem value={option} id={`option-${index}`} className="border-[#0D6EB2] min-w-[20px] min-h-[20px]" />
+                <Label htmlFor={`option-${index}`} className="text-base md:text-lg cursor-pointer flex-1 leading-snug">
                   {option}
                 </Label>
               </div>
@@ -144,9 +144,17 @@ export default function Home() {
       case "checkbox":
         const selectedOptions = currentAnswer ? currentAnswer.split("|||") : [];
         return (
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             {options.map((option: string, index: number) => (
-              <div key={index} className="flex items-center space-x-3 p-3 rounded hover:bg-gray-50 border border-gray-200">
+              <div key={index} className="flex items-center space-x-3 p-4 md:p-3 rounded hover:bg-gray-50 border border-gray-200 min-h-[56px] md:min-h-0 cursor-pointer" onClick={() => {
+                const newSelected = [...selectedOptions];
+                if (selectedOptions.includes(option)) {
+                  handleAnswerChange(newSelected.filter(o => o !== option).join("|||"));
+                } else {
+                  newSelected.push(option);
+                  handleAnswerChange(newSelected.join("|||"));
+                }
+              }}>
                 <Checkbox
                   id={`checkbox-${index}`}
                   checked={selectedOptions.includes(option)}
@@ -159,9 +167,9 @@ export default function Home() {
                     }
                     handleAnswerChange(newSelected.join("|||"));
                   }}
-                  className="border-[#0D6EB2]"
+                  className="border-[#0D6EB2] min-w-[20px] min-h-[20px]"
                 />
-                <Label htmlFor={`checkbox-${index}`} className="text-lg cursor-pointer flex-1">
+                <Label htmlFor={`checkbox-${index}`} className="text-base md:text-lg cursor-pointer flex-1 leading-snug">
                   {option}
                 </Label>
               </div>
@@ -191,23 +199,23 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-4">
-      <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-8 border-t-4 border-[#0D6EB2]">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-3 md:p-4">
+      <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-4 md:p-8 border-t-4 border-[#0D6EB2]">
         {/* Header avec logo et image */}
-        <div className="mb-8">
-          <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-24 mx-auto mb-6" />
-          <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full rounded-lg shadow-md mb-6" />
+        <div className="mb-4 md:mb-8">
+          <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-16 md:h-24 mx-auto mb-3 md:mb-6" />
+          <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full rounded-lg shadow-md mb-3 md:mb-6 max-h-32 md:max-h-none object-cover" />
         </div>
 
         {/* Barre de progression */}
-        <div className="mb-8">
+        <div className="mb-4 md:mb-8 sticky top-0 bg-white py-2 -mx-4 md:mx-0 px-4 md:px-0 z-10 md:static">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-600">
+            <span className="text-xs md:text-sm font-medium text-gray-600">
               Question {currentQuestionIndex + 1} sur {totalQuestions}
             </span>
-            <span className="text-sm font-medium text-[#0D6EB2]">{Math.round(progress)}%</span>
+            <span className="text-xs md:text-sm font-medium text-[#0D6EB2]">{Math.round(progress)}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+          <div className="w-full bg-gray-200 rounded-full h-2 md:h-3 overflow-hidden">
             <div
               className="bg-gradient-to-r from-[#0D6EB2] to-[#DF9F14] h-full transition-all duration-300 rounded-full"
               style={{ width: `${progress}%` }}
@@ -216,8 +224,8 @@ export default function Home() {
         </div>
 
         {/* Question */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        <div className="mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6 leading-tight">
             {currentQuestion.questionText}
             {currentQuestion.isRequired === 1 && <span className="text-red-500 ml-1">*</span>}
           </h2>
@@ -225,22 +233,22 @@ export default function Home() {
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+        <div className="flex justify-between items-center pt-4 md:pt-6 border-t border-gray-200 gap-3">
           <Button
             onClick={handlePrevious}
             disabled={currentQuestionIndex === 0}
             variant="outline"
-            className="flex items-center gap-2 border-[#0D6EB2] text-[#0D6EB2] hover:bg-[#0D6EB2] hover:text-white disabled:opacity-50"
+            className="flex items-center gap-1 md:gap-2 border-[#0D6EB2] text-[#0D6EB2] hover:bg-[#0D6EB2] hover:text-white disabled:opacity-50 px-4 md:px-6 py-3 md:py-2 text-sm md:text-base min-h-[48px] md:min-h-0"
           >
             <ChevronLeft className="w-4 h-4" />
-            Précédent
+            <span className="hidden sm:inline">Précédent</span>
           </Button>
 
           {currentQuestionIndex === totalQuestions - 1 ? (
             <Button
               onClick={handleSubmit}
               disabled={!canGoNext()}
-              className="flex items-center gap-2 bg-[#DF9F14] hover:bg-[#c88a10] text-white disabled:opacity-50"
+              className="flex items-center gap-1 md:gap-2 bg-[#DF9F14] hover:bg-[#c88a10] text-white disabled:opacity-50 px-4 md:px-6 py-3 md:py-2 text-sm md:text-base min-h-[48px] md:min-h-0"
             >
               Terminer
               <CheckCircle2 className="w-4 h-4" />
@@ -249,7 +257,7 @@ export default function Home() {
             <Button
               onClick={handleNext}
               disabled={!canGoNext()}
-              className="flex items-center gap-2 bg-[#0D6EB2] hover:bg-[#0a5a94] text-white disabled:opacity-50"
+              className="flex items-center gap-1 md:gap-2 bg-[#0D6EB2] hover:bg-[#0a5a94] text-white disabled:opacity-50 px-4 md:px-6 py-3 md:py-2 text-sm md:text-base min-h-[48px] md:min-h-0"
             >
               Suivant
               <ChevronRight className="w-4 h-4" />
