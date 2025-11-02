@@ -98,3 +98,7 @@
 ## Ajout du favicon
 - [x] Copier le favicon dans le dossier public
 - [x] Mettre à jour le HTML pour référencer le nouveau favicon
+
+## Modification message de remerciement et titre
+- [x] Modifier le message de confirmation pour inclure l'invitation du 6 décembre
+- [x] Changer le titre de la page HTML par "Consultation citoyenne"
