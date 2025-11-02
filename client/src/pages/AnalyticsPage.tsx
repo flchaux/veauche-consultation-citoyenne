@@ -19,16 +19,20 @@ export default function AnalyticsPage() {
   const completionRate = totalResponses > 0 ? Math.round((completedResponses / totalResponses) * 100) : 0;
 
   const handleExport = () => {
-    const exportData = responses.map(response => {
-      const row: any = {
-        "ID Réponse": response.id,
+    const exportData = responses.map((response) => {
+      const row: Record<string, string> = {
+        "ID Réponse": response.id.toString(),
         "Date": new Date(response.createdAt).toLocaleString("fr-FR"),
         "Statut": response.isCompleted === 1 ? "Complété" : "En cours",
       };
 
-      questions.forEach(question => {
-        const answer = allAnswers.find(a => a.responseId === response.id && a.questionId === question.id);
-        row[question.questionText] = answer?.answerText || "";
+      questions.forEach((question) => {
+        const answer = allAnswers.find(
+          (a) => a.responseId === response.id && a.questionId === question.id
+        );
+        // Remplacer le séparateur ||| par des virgules pour l'affichage dans Excel
+        const answerText = answer?.answerText || "";
+        row[question.questionText] = answerText.replace(/\|\|\|/g, ", ");
       });
 
       return row;

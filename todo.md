@@ -37,3 +37,6 @@
 
 ## Nouvelle fonctionnalité
 - [x] Ajouter la réorganisation des questions par glisser-déposer (drag and drop)
+
+## Bugs à corriger
+- [x] Certaines options des QCM ne peuvent pas être sélectionnées (Cadre de vie, Jeunesse)

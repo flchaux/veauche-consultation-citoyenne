@@ -142,7 +142,7 @@ export default function Home() {
         );
 
       case "checkbox":
-        const selectedOptions = currentAnswer ? currentAnswer.split(",") : [];
+        const selectedOptions = currentAnswer ? currentAnswer.split("|||") : [];
         return (
           <div className="space-y-4">
             {options.map((option: string, index: number) => (
@@ -157,7 +157,7 @@ export default function Home() {
                     } else {
                       newSelected = newSelected.filter(o => o !== option);
                     }
-                    handleAnswerChange(newSelected.join(","));
+                    handleAnswerChange(newSelected.join("|||"));
                   }}
                   className="border-[#0D6EB2]"
                 />
