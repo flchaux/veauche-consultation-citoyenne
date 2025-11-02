@@ -51,3 +51,8 @@
 - [x] Augmenter la taille de police des questions sur mobile
 - [x] Améliorer les zones cliquables (toute la ligne pour checkboxes)
 - [x] Ajouter des marges latérales adaptées sur mobile
+
+## Nouvelles modifications
+- [x] Masquer le logo sur mobile (uniquement bannière visible)
+- [x] Réduire au maximum les marges autour de la bannière sur mobile
+- [x] Ajouter protection par mot de passe fixe "vmm4Ever" pour le back-office

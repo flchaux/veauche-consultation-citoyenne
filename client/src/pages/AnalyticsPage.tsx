@@ -6,9 +6,20 @@ import { trpc } from "@/lib/trpc";
 import { FileDown, Users, CheckCircle, Clock } from "lucide-react";
 import * as XLSX from "xlsx";
 import { getLoginUrl } from "@/const";
+import { useLocation } from "wouter";
+import { useEffect } from "react";
 
 export default function AnalyticsPage() {
   const { user, loading } = useAuth();
+  const [, setLocation] = useLocation();
+
+  // Vérifier l'authentification par mot de passe
+  useEffect(() => {
+    const isAuthenticated = sessionStorage.getItem("admin_authenticated");
+    if (!isAuthenticated) {
+      setLocation("/admin-login");
+    }
+  }, [setLocation]);
   const { data: responses = [] } = trpc.responses.list.useQuery(undefined, { enabled: !!user });
   const { data: questions = [] } = trpc.questions.list.useQuery();
   const { data: allAnswers = [] } = trpc.answers.getAll.useQuery(undefined, { enabled: !!user });

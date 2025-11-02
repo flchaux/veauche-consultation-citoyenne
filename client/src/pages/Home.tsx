@@ -66,8 +66,8 @@ export default function Home() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-4 md:p-8">
-        <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-6 md:p-12 text-center border-t-4 border-[#0D6EB2]">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-0 md:p-8">
+        <div className="max-w-2xl w-full bg-white md:rounded-lg shadow-lg p-6 md:p-12 text-center border-t-4 border-[#0D6EB2]">
           <div className="mb-6 flex justify-center">
             <CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-[#0D6EB2]" />
           </div>
@@ -82,11 +82,11 @@ export default function Home() {
 
   if (!currentQuestion || totalQuestions === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-4 md:p-8">
-        <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-6 md:p-8 border-t-4 border-[#0D6EB2]">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-0 md:p-8">
+        <div className="max-w-4xl w-full bg-white md:rounded-lg shadow-lg p-6 md:p-8 border-t-4 border-[#0D6EB2]">
           <div className="mb-6 md:mb-8">
-            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-16 md:h-24 mx-auto mb-4 md:mb-6" />
-            <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full rounded-lg shadow-md max-h-32 md:max-h-none object-cover" />
+            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="hidden md:block h-24 mx-auto mb-6" />
+            <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full rounded-md md:rounded-lg shadow-md max-h-32 md:max-h-none object-cover -mx-6 md:mx-0" style={{width: 'calc(100% + 3rem)'}} />
           </div>
           <p className="text-center text-gray-600">
             Aucune question disponible pour le moment.
@@ -199,12 +199,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-3 md:p-4">
-      <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-4 md:p-8 border-t-4 border-[#0D6EB2]">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-0 md:p-4">
+      <div className="max-w-4xl w-full bg-white md:rounded-lg shadow-lg p-4 md:p-8 border-t-4 border-[#0D6EB2]">
         {/* Header avec logo et image */}
         <div className="mb-4 md:mb-8">
-          <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-16 md:h-24 mx-auto mb-3 md:mb-6" />
-          <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full rounded-lg shadow-md mb-3 md:mb-6 max-h-32 md:max-h-none object-cover" />
+          <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="hidden md:block h-24 mx-auto mb-6" />
+          <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full rounded-md md:rounded-lg shadow-md mb-3 md:mb-6 max-h-32 md:max-h-none object-cover -mx-4 md:mx-0 md:w-full" style={{width: 'calc(100% + 2rem)'}} />
         </div>
 
         {/* Barre de progression */}

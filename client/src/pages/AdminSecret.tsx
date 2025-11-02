@@ -14,6 +14,7 @@ import { Trash2, Plus } from "lucide-react";
 import { SortableQuestion } from "@/components/SortableQuestion";
 import { toast } from "sonner";
 import { getLoginUrl } from "@/const";
+import { useLocation } from "wouter";
 import {
   DndContext,
   closestCenter,
@@ -34,6 +35,15 @@ import { CSS } from "@dnd-kit/utilities";
 
 export default function AdminSecret() {
   const { user, loading } = useAuth();
+  const [, setLocation] = useLocation();
+
+  // Vérifier l'authentification par mot de passe
+  useEffect(() => {
+    const isAuthenticated = sessionStorage.getItem("admin_authenticated");
+    if (!isAuthenticated) {
+      setLocation("/admin-login");
+    }
+  }, [setLocation]);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newQuestion, setNewQuestion] = useState({
     questionText: "",
