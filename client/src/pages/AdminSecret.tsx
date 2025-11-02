@@ -52,8 +52,17 @@ export default function AdminSecret() {
     }
 
     const orderIndex = questions.length;
+    
+    // Convertir les options en JSON si nécessaire
+    let optionsJson = newQuestion.options;
+    if (["radio", "checkbox", "select"].includes(newQuestion.questionType) && newQuestion.options) {
+      const optionsArray = newQuestion.options.split("\n").map(opt => opt.trim()).filter(opt => opt.length > 0);
+      optionsJson = JSON.stringify(optionsArray);
+    }
+    
     createMutation.mutate({
       ...newQuestion,
+      options: optionsJson,
       orderIndex,
     });
   };
@@ -191,7 +200,13 @@ export default function AdminSecret() {
             </Card>
           ) : (
             questions.map((question, index) => {
-              const options = question.options ? JSON.parse(question.options) : [];
+              let options = [];
+              try {
+                options = question.options ? JSON.parse(question.options) : [];
+              } catch (e) {
+                // Si le parsing échoue, traiter comme une chaîne avec des lignes
+                options = question.options ? question.options.split("\n").filter(opt => opt.trim()) : [];
+              }
               return (
                 <Card key={question.id} className="border-l-4 border-l-[#0D6EB2]">
                   <CardHeader>

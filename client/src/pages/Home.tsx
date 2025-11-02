@@ -98,7 +98,13 @@ export default function Home() {
 
   const renderQuestionInput = () => {
     const currentAnswer = answers[currentQuestion.id] || "";
-    const options = currentQuestion.options ? JSON.parse(currentQuestion.options) : [];
+    let options = [];
+    try {
+      options = currentQuestion.options ? JSON.parse(currentQuestion.options) : [];
+    } catch (e) {
+      // Si le parsing échoue, traiter comme une chaîne avec des lignes
+      options = currentQuestion.options ? currentQuestion.options.split("\n").filter(opt => opt.trim()) : [];
+    }
 
     switch (currentQuestion.questionType) {
       case "text":

@@ -31,3 +31,6 @@
 - [x] Intégrer le header de consultation citoyenne
 - [x] Créer un design "papier" pour le formulaire
 - [x] Adapter la palette de couleurs au branding de la ville
+
+## Bugs à corriger
+- [x] Erreur JSON lors de la création de questions à choix multiples (les options doivent être converties en tableau JSON)
