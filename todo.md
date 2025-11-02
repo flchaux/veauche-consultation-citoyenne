@@ -56,3 +56,10 @@
 - [x] Masquer le logo sur mobile (uniquement bannière visible)
 - [x] Réduire au maximum les marges autour de la bannière sur mobile
 - [x] Ajouter protection par mot de passe fixe "vmm4Ever" pour le back-office
+
+## Ajustement bannière mobile
+- [ ] Faire en sorte que la bannière prenne toute la largeur de la zone blanche sur mobile (sans marges latérales)
+
+## Ajustements finaux
+- [x] Faire en sorte que la bannière prenne toute la largeur de la zone blanche sur mobile (sans marges latérales)
+- [x] Ajouter le logo sur la page de remerciement
