@@ -9,10 +9,28 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { trpc } from "@/lib/trpc";
-import { useState } from "react";
-import { Trash2, Plus, GripVertical } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Trash2, Plus } from "lucide-react";
+import { SortableQuestion } from "@/components/SortableQuestion";
 import { toast } from "sonner";
 import { getLoginUrl } from "@/const";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 export default function AdminSecret() {
   const { user, loading } = useAuth();
@@ -25,6 +43,20 @@ export default function AdminSecret() {
   });
 
   const { data: questions = [], refetch } = trpc.questions.list.useQuery();
+  const [localQuestions, setLocalQuestions] = useState(questions);
+  
+  // Mettre à jour localQuestions quand questions change
+  useEffect(() => {
+    setLocalQuestions(questions);
+  }, [questions]);
+  
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+  
   const createMutation = trpc.questions.create.useMutation({
     onSuccess: () => {
       refetch();
@@ -38,10 +70,18 @@ export default function AdminSecret() {
       toast.success("Question ajoutée avec succès");
     },
   });
+  
   const deleteMutation = trpc.questions.delete.useMutation({
     onSuccess: () => {
       refetch();
       toast.success("Question supprimée");
+    },
+  });
+  
+  const reorderMutation = trpc.questions.reorder.useMutation({
+    onSuccess: () => {
+      refetch();
+      toast.success("Questions réorganisées");
     },
   });
 
@@ -71,6 +111,28 @@ export default function AdminSecret() {
     if (confirm("Êtes-vous sûr de vouloir supprimer cette question ?")) {
       deleteMutation.mutate({ id });
     }
+  };
+  
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (!over || active.id === over.id) {
+      return;
+    }
+    
+    const oldIndex = localQuestions.findIndex((q) => q.id === active.id);
+    const newIndex = localQuestions.findIndex((q) => q.id === over.id);
+    
+    const newQuestions = arrayMove(localQuestions, oldIndex, newIndex);
+    setLocalQuestions(newQuestions);
+    
+    // Mettre à jour les orderIndex
+    const updates = newQuestions.map((q, index) => ({
+      id: q.id,
+      orderIndex: index,
+    }));
+    
+    reorderMutation.mutate({ questions: updates });
   };
 
   if (loading) {
@@ -190,8 +252,8 @@ export default function AdminSecret() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-800">Questions ({questions.length})</h2>
-          {questions.length === 0 ? (
+          <h2 className="text-xl font-semibold text-gray-800">Questions ({localQuestions.length})</h2>
+          {localQuestions.length === 0 ? (
             <Card>
               <CardContent className="py-12 text-center">
                 <p className="text-gray-600">Aucune question pour le moment.</p>
@@ -199,59 +261,27 @@ export default function AdminSecret() {
               </CardContent>
             </Card>
           ) : (
-            questions.map((question, index) => {
-              let options = [];
-              try {
-                options = question.options ? JSON.parse(question.options) : [];
-              } catch (e) {
-                // Si le parsing échoue, traiter comme une chaîne avec des lignes
-                options = question.options ? question.options.split("\n").filter(opt => opt.trim()) : [];
-              }
-              return (
-                <Card key={question.id} className="border-l-4 border-l-[#0D6EB2]">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3 flex-1">
-                        <GripVertical className="w-5 h-5 text-gray-400 mt-1" />
-                        <div className="flex-1">
-                          <CardTitle className="text-lg">
-                            Q{index + 1}. {question.questionText}
-                            {question.isRequired === 1 && <span className="text-red-500 ml-1">*</span>}
-                          </CardTitle>
-                          <CardDescription className="mt-1">
-                            Type: {
-                              question.questionType === "text" ? "Texte court" :
-                              question.questionType === "textarea" ? "Texte long" :
-                              question.questionType === "radio" ? "Choix unique" :
-                              question.questionType === "checkbox" ? "Choix multiples" :
-                              "Liste déroulante"
-                            }
-                          </CardDescription>
-                        </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleDeleteQuestion(question.id)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  {options.length > 0 && (
-                    <CardContent>
-                      <p className="text-sm font-medium text-gray-700 mb-2">Options:</p>
-                      <ul className="list-disc list-inside space-y-1">
-                        {options.map((option: string, idx: number) => (
-                          <li key={idx} className="text-sm text-gray-600">{option}</li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  )}
-                </Card>
-              );
-            })
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={localQuestions.map((q) => q.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="space-y-4">
+                  {localQuestions.map((question, index) => (
+                    <SortableQuestion
+                      key={question.id}
+                      question={question}
+                      index={index}
+                      onDelete={handleDeleteQuestion}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
           )}
         </div>
       </div>

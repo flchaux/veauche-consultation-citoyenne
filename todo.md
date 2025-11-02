@@ -34,3 +34,6 @@
 
 ## Bugs à corriger
 - [x] Erreur JSON lors de la création de questions à choix multiples (les options doivent être converties en tableau JSON)
+
+## Nouvelle fonctionnalité
+- [x] Ajouter la réorganisation des questions par glisser-déposer (drag and drop)

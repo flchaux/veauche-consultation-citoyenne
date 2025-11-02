@@ -57,6 +57,21 @@ export const appRouter = router({
         await db.deleteQuestion(input.id);
         return { success: true };
       }),
+    
+    reorder: protectedProcedure
+      .input(z.object({
+        questions: z.array(z.object({
+          id: z.number(),
+          orderIndex: z.number(),
+        })),
+      }))
+      .mutation(async ({ input }) => {
+        // Mettre à jour l'ordre de chaque question
+        for (const question of input.questions) {
+          await db.updateQuestion(question.id, { orderIndex: question.orderIndex });
+        }
+        return { success: true };
+      }),
   }),
 
   // Responses management
