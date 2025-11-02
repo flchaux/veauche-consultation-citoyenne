@@ -1,40 +1,12 @@
 {
   "version": "7",
-  "dialect": "mysql",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1762033692908,
-      "tag": "0000_brief_thaddeus_ross",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1762033746663,
-      "tag": "0001_cold_sister_grimm",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1762068158481,
-      "tag": "0002_right_lorna_dane",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1762068228736,
-      "tag": "0003_long_norman_osborn",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1762075770620,
-      "tag": "0004_sturdy_wolfpack",
+      "version": "7",
+      "when": 1762078864051,
+      "tag": "0000_fat_patriot",
       "breakpoints": true
     }
   ]

@@ -1,14 +1,5 @@
 import { integer, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
-// Question types enum
-export const questionTypeEnum = pgTable("question_type", {
-  text: text("text"),
-  textarea: text("textarea"),
-  radio: text("radio"),
-  checkbox: text("checkbox"),
-  select: text("select"),
-});
-
 // Questions table
 export const questions = pgTable("questions", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),

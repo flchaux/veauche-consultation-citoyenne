@@ -88,3 +88,9 @@
 - [x] Supprimer toutes les mentions à OAuth dans le code
 - [x] Supprimer les variables d'environnement OAuth
 - [x] Simplifier l'authentification (mot de passe uniquement)
+
+## Diagnostic et correction schéma PostgreSQL
+- [x] Vérifier la configuration DATABASE_URL
+- [x] Diagnostiquer pourquoi le schéma n'est pas créé (drizzle.config.ts utilisait "mysql" au lieu de "postgresql")
+- [x] Générer et appliquer les migrations Drizzle
+- [x] Vérifier que les tables sont créées correctement
