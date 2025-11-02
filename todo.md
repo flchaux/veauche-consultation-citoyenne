@@ -63,3 +63,9 @@
 ## Ajustements finaux
 - [x] Faire en sorte que la bannière prenne toute la largeur de la zone blanche sur mobile (sans marges latérales)
 - [x] Ajouter le logo sur la page de remerciement
+
+## Bug à corriger
+- [x] Le clic sur le label d'une checkbox doit sélectionner la checkbox
+
+## Nouvelles modifications
+- [x] Agrandir le logo sur la page de remerciement

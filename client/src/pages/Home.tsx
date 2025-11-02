@@ -69,7 +69,7 @@ export default function Home() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-0 md:p-8">
         <div className="max-w-2xl w-full bg-white md:rounded-lg shadow-lg p-6 md:p-12 text-center border-t-4 border-[#0D6EB2]">
           <div className="mb-6">
-            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-20 md:h-24 mx-auto mb-6" />
+            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-32 md:h-40 mx-auto mb-6" />
           </div>
           <div className="mb-6 flex justify-center">
             <CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-[#0D6EB2]" />
@@ -146,33 +146,30 @@ export default function Home() {
 
       case "checkbox":
         const selectedOptions = currentAnswer ? currentAnswer.split("|||") : [];
+        const toggleOption = (option: string) => {
+          const newSelected = [...selectedOptions];
+          if (selectedOptions.includes(option)) {
+            handleAnswerChange(newSelected.filter(o => o !== option).join("|||"));
+          } else {
+            newSelected.push(option);
+            handleAnswerChange(newSelected.join("|||"));
+          }
+        };
         return (
           <div className="space-y-3 md:space-y-4">
             {options.map((option: string, index: number) => (
-              <div key={index} className="flex items-center space-x-3 p-4 md:p-3 rounded hover:bg-gray-50 border border-gray-200 min-h-[56px] md:min-h-0 cursor-pointer" onClick={() => {
-                const newSelected = [...selectedOptions];
-                if (selectedOptions.includes(option)) {
-                  handleAnswerChange(newSelected.filter(o => o !== option).join("|||"));
-                } else {
-                  newSelected.push(option);
-                  handleAnswerChange(newSelected.join("|||"));
-                }
-              }}>
+              <div key={index} className="flex items-center space-x-3 p-4 md:p-3 rounded hover:bg-gray-50 border border-gray-200 min-h-[56px] md:min-h-0">
                 <Checkbox
                   id={`checkbox-${index}`}
                   checked={selectedOptions.includes(option)}
-                  onCheckedChange={(checked) => {
-                    let newSelected = [...selectedOptions];
-                    if (checked) {
-                      newSelected.push(option);
-                    } else {
-                      newSelected = newSelected.filter(o => o !== option);
-                    }
-                    handleAnswerChange(newSelected.join("|||"));
-                  }}
+                  onCheckedChange={() => toggleOption(option)}
                   className="border-[#0D6EB2] min-w-[20px] min-h-[20px]"
                 />
-                <Label htmlFor={`checkbox-${index}`} className="text-base md:text-lg cursor-pointer flex-1 leading-snug">
+                <Label 
+                  htmlFor={`checkbox-${index}`} 
+                  className="text-base md:text-lg cursor-pointer flex-1 leading-snug"
+                  onClick={() => toggleOption(option)}
+                >
                   {option}
                 </Label>
               </div>
