@@ -83,3 +83,8 @@
 - [x] Adapter le schéma Drizzle pour PostgreSQL
 - [x] Mettre à jour les dépendances
 - [ ] Configurer DATABASE_URL PostgreSQL et tester la migration
+
+## Suppression OAuth
+- [x] Supprimer toutes les mentions à OAuth dans le code
+- [x] Supprimer les variables d'environnement OAuth
+- [x] Simplifier l'authentification (mot de passe uniquement)

@@ -1,4 +1,4 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import { Trash2, Plus } from "lucide-react";
 import { SortableQuestion } from "@/components/SortableQuestion";
 import { toast } from "sonner";
-import { getLoginUrl } from "@/const";
+
 import { useLocation } from "wouter";
 import {
   DndContext,
@@ -34,7 +34,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 
 export default function AdminSecret() {
-  const { user, loading } = useAuth();
+
   const [, setLocation] = useLocation();
 
   // Vérifier l'authentification par mot de passe
@@ -145,33 +145,7 @@ export default function AdminSecret() {
     reorderMutation.mutate({ questions: updates });
   };
 
-  if (loading) {
-    return (
-      <DashboardLayout>
-        <div className="flex items-center justify-center h-64">
-          <p className="text-gray-600">Chargement...</p>
-        </div>
-      </DashboardLayout>
-    );
-  }
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Card className="max-w-md w-full">
-          <CardHeader>
-            <CardTitle>Accès restreint</CardTitle>
-            <CardDescription>Vous devez être connecté pour accéder au back-office.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button asChild className="w-full bg-[#0D6EB2] hover:bg-[#0a5a94]">
-              <a href={getLoginUrl()}>Se connecter avec Google</a>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <DashboardLayout>

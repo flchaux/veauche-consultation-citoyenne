@@ -1,16 +1,16 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
 import { FileDown, Users, CheckCircle, Clock } from "lucide-react";
 import * as XLSX from "xlsx";
-import { getLoginUrl } from "@/const";
+
 import { useLocation } from "wouter";
 import { useEffect } from "react";
 
 export default function AnalyticsPage() {
-  const { user, loading } = useAuth();
+
   const [, setLocation] = useLocation();
 
   // Vérifier l'authentification par mot de passe
@@ -20,9 +20,9 @@ export default function AnalyticsPage() {
       setLocation("/admin-login");
     }
   }, [setLocation]);
-  const { data: responses = [] } = trpc.responses.list.useQuery(undefined, { enabled: !!user });
+  const { data: responses = [] } = trpc.responses.list.useQuery();
   const { data: questions = [] } = trpc.questions.list.useQuery();
-  const { data: allAnswers = [] } = trpc.answers.getAll.useQuery(undefined, { enabled: !!user });
+  const { data: allAnswers = [] } = trpc.answers.getAll.useQuery();
 
   const totalResponses = responses.length;
   const completedResponses = responses.filter(r => r.completedAt !== null).length;
@@ -55,33 +55,7 @@ export default function AnalyticsPage() {
     XLSX.writeFile(wb, `consultation-citoyenne-${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
-  if (loading) {
-    return (
-      <DashboardLayout>
-        <div className="flex items-center justify-center h-64">
-          <p className="text-gray-600">Chargement...</p>
-        </div>
-      </DashboardLayout>
-    );
-  }
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Card className="max-w-md w-full">
-          <CardHeader>
-            <CardTitle>Accès restreint</CardTitle>
-            <CardDescription>Vous devez être connecté pour accéder aux statistiques.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button asChild className="w-full bg-[#0D6EB2] hover:bg-[#0a5a94]">
-              <a href={getLoginUrl()}>Se connecter avec Google</a>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <DashboardLayout>

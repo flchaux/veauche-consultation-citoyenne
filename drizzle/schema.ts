@@ -1,41 +1,19 @@
-import { integer, pgEnum, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
-
-/**
- * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
- */
-
-export const roleEnum = pgEnum('role', ['user', 'admin']);
-
-export const users = pgTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
-  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
-  openId: varchar("openId", { length: 64 }).notNull().unique(),
-  name: text("name"),
-  email: varchar("email", { length: 320 }),
-  loginMethod: varchar("loginMethod", { length: 64 }),
-  role: roleEnum("role").default('user').notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
-  lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
-});
-
-export type User = typeof users.$inferSelect;
-export type InsertUser = typeof users.$inferInsert;
+import { integer, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 // Question types enum
-export const questionTypeEnum = pgEnum('question_type', ['text', 'textarea', 'radio', 'checkbox', 'select']);
+export const questionTypeEnum = pgTable("question_type", {
+  text: text("text"),
+  textarea: text("textarea"),
+  radio: text("radio"),
+  checkbox: text("checkbox"),
+  select: text("select"),
+});
 
 // Questions table
 export const questions = pgTable("questions", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   questionText: text("questionText").notNull(),
-  questionType: questionTypeEnum("questionType").notNull(),
+  questionType: varchar("questionType", { length: 50 }).notNull(), // 'text', 'textarea', 'radio', 'checkbox', 'select'
   options: text("options"), // JSON string for radio/checkbox/select options
   isRequired: integer("isRequired").default(1).notNull(), // 1 = required, 0 = optional
   orderIndex: integer("orderIndex").notNull(),

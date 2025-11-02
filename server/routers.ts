@@ -1,30 +1,17 @@
-import { COOKIE_NAME } from "@shared/const";
-import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 
 export const appRouter = router({
   system: systemRouter,
-  auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
-    logout: publicProcedure.mutation(({ ctx }) => {
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return {
-        success: true,
-      } as const;
-    }),
-  }),
-
-  // Questions management (admin only)
+  // Questions management
   questions: router({
     list: publicProcedure.query(async () => {
       return await db.getAllQuestions();
     }),
     
-    create: protectedProcedure
+    create: publicProcedure
       .input(z.object({
         questionText: z.string(),
         questionType: z.enum(["text", "textarea", "radio", "checkbox", "select"]),
@@ -36,7 +23,7 @@ export const appRouter = router({
         return await db.createQuestion(input);
       }),
     
-    update: protectedProcedure
+    update: publicProcedure
       .input(z.object({
         id: z.number(),
         questionText: z.string().optional(),
@@ -51,14 +38,14 @@ export const appRouter = router({
         return { success: true };
       }),
     
-    delete: protectedProcedure
+    delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.deleteQuestion(input.id);
         return { success: true };
       }),
     
-    reorder: protectedProcedure
+    reorder: publicProcedure
       .input(z.object({
         questions: z.array(z.object({
           id: z.number(),
@@ -86,7 +73,7 @@ export const appRouter = router({
         return response;
       }),
     
-    list: protectedProcedure.query(async () => {
+    list: publicProcedure.query(async () => {
       return await db.getAllResponses();
     }),
     
@@ -117,7 +104,7 @@ export const appRouter = router({
         return await db.getAnswersByResponseId(input.responseId);
       }),
     
-    getAll: protectedProcedure.query(async () => {
+    getAll: publicProcedure.query(async () => {
       return await db.getAllAnswers();
     }),
   }),
