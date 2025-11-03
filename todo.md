@@ -102,3 +102,6 @@
 ## Modification message de remerciement et titre
 - [x] Modifier le message de confirmation pour inclure l'invitation du 6 décembre
 - [x] Changer le titre de la page HTML par "Consultation citoyenne"
+
+## Correction nom du lieu
+- [x] Changer "salle Emile Peltier" par "Centre Culturel Emile Pelletier"

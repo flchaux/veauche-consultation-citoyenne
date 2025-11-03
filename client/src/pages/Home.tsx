@@ -76,7 +76,7 @@ export default function Home() {
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-[#0D6EB2] mb-4">Merci !</h1>
           <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-            Merci pour votre participation. Votre réponse sera prise en compte dans la construction de nos propositions pour Veauche. Nous vous donnons rendez-vous le <strong>6 décembre à la salle Emile Peltier</strong> pour la présentation des résultats suivi d'un verre de l'amitié.
+            Merci pour votre participation. Votre réponse sera prise en compte dans la construction de nos propositions pour Veauche. Nous vous donnons rendez-vous le <strong>6 décembre au Centre Culturel Emile Pelletier</strong> pour la présentation des résultats suivi d'un verre de l'amitié.
           </p>
         </div>
       </div>
