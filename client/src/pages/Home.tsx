@@ -271,6 +271,17 @@ export default function Home() {
         </div>
       </div>
       </div>
+      
+      {/* Footer */}
+      <footer className="mt-8 py-4 text-center text-xs text-gray-500">
+        <a href="/mentions-legales" className="hover:text-[#0D6EB2] underline mx-2">
+          Mentions légales
+        </a>
+        <span>|</span>
+        <a href="/rgpd" className="hover:text-[#0D6EB2] underline mx-2">
+          RGPD
+        </a>
+      </footer>
     </div>
   );
 }

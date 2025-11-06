@@ -8,11 +8,15 @@ import Home from "./pages/Home";
 import AdminSecret from "./pages/AdminSecret";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import AdminLogin from "./pages/AdminLogin";
+import MentionsLegales from "./pages/MentionsLegales";
+import RGPD from "./pages/RGPD";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/mentions-legales" component={MentionsLegales} />
+      <Route path="/rgpd" component={RGPD} />
       <Route path="/admin-login" component={AdminLogin} />
       <Route path="/admin-secret" component={AdminSecret} />
       <Route path="/admin-secret/analytics" component={AnalyticsPage} />

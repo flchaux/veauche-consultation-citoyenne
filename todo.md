@@ -109,3 +109,8 @@
 ## Ajout balises meta SEO
 - [x] Ajouter les balises meta pour le référencement Google
 - [x] Inclure les mots-clés pertinents pour Veauche Mérite Mieux
+
+## Footer et pages légales
+- [x] Créer la page Mentions légales
+- [x] Créer la page RGPD
+- [x] Ajouter un footer avec liens vers ces pages
