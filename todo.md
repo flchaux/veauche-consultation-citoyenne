@@ -105,3 +105,7 @@
 
 ## Correction nom du lieu
 - [x] Changer "salle Emile Peltier" par "Centre Culturel Emile Pelletier"
+
+## Ajout balises meta SEO
+- [x] Ajouter les balises meta pour le référencement Google
+- [x] Inclure les mots-clés pertinents pour Veauche Mérite Mieux
