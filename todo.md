@@ -114,3 +114,6 @@
 - [x] Créer la page Mentions légales
 - [x] Créer la page RGPD
 - [x] Ajouter un footer avec liens vers ces pages
+
+## Correction RGPD
+- [x] Corriger la page RGPD pour mentionner la collecte d'emails et numéros de téléphone

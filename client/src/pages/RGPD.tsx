@@ -18,11 +18,12 @@ export default function RGPD() {
           </p>
           <ul className="list-disc list-inside text-gray-700 leading-relaxed ml-4">
             <li>Vos réponses aux questions de la consultation citoyenne</li>
+            <li><strong>Votre adresse email ou numéro de téléphone</strong> (si vous choisissez de les fournir dans vos réponses)</li>
             <li>Un identifiant de session technique pour assurer le bon fonctionnement du formulaire</li>
             <li>La date et l'heure de votre participation</li>
           </ul>
           <p className="text-gray-700 leading-relaxed mt-3">
-            <strong>Aucune donnée personnelle identifiable</strong> (nom, prénom, adresse email, adresse IP) n'est collectée. Les réponses sont totalement anonymes.
+            Ces données sont collectées <strong>uniquement si vous choisissez de les communiquer</strong> dans vos réponses aux questions ouvertes. Aucune donnée d'identification technique (adresse IP, cookies de suivi) n'est collectée.
           </p>
         </section>
 
@@ -35,7 +36,11 @@ export default function RGPD() {
             <li>Recueillir l'avis des citoyens sur les thématiques municipales</li>
             <li>Analyser les résultats de la consultation</li>
             <li>Élaborer le programme de l'équipe Veauche Mérite Mieux pour les élections municipales 2026</li>
+            <li>Vous recontacter si vous avez fourni vos coordonnées (email ou téléphone) et exprimé le souhait d'être informé de la suite de la démarche</li>
           </ul>
+          <p className="text-gray-700 leading-relaxed mt-3">
+            <strong>Vos coordonnées ne seront jamais utilisées à des fins commerciales, vendues ou transmises à des tiers.</strong>
+          </p>
         </section>
 
         <section className="mb-8">
