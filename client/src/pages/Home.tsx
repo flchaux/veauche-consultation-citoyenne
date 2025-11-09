@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
+import ShareButtons from "@/components/ShareButtons";
 
 export default function Home() {
   const [sessionId] = useState(() => `session-${Date.now()}-${Math.random()}`);
@@ -75,9 +76,12 @@ export default function Home() {
             <CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-[#0D6EB2]" />
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-[#0D6EB2] mb-4">Merci !</h1>
-          <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-6">
             Merci pour votre participation. Votre réponse sera prise en compte dans la construction de nos propositions pour Veauche. Nous vous donnons rendez-vous le <strong>6 décembre au Centre Culturel Emile Pelletier</strong> pour la présentation des résultats suivi d'un verre de l'amitié.
           </p>
+          <div className="border-t border-gray-200 pt-6">
+            <ShareButtons />
+          </div>
         </div>
       </div>
     );
@@ -94,6 +98,7 @@ export default function Home() {
           <p className="text-center text-gray-600">
             Aucune question disponible pour le moment.
           </p>
+          <ShareButtons />
         </div>
       </div>
     );

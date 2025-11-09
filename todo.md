@@ -117,3 +117,8 @@
 
 ## Correction RGPD
 - [x] Corriger la page RGPD pour mentionner la collecte d'emails et numéros de téléphone
+
+## Boutons de partage social
+- [x] Créer le composant de partage social
+- [x] Ajouter les boutons Facebook et email
+- [x] Intégrer dans la page d'accueil
