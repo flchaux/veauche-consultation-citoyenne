@@ -8,6 +8,13 @@
       "when": 1762078864051,
       "tag": "0000_fat_patriot",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1762778394222,
+      "tag": "0001_outstanding_the_hood",
+      "breakpoints": true
     }
   ]
 }

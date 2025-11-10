@@ -122,3 +122,9 @@
 - [x] Créer le composant de partage social
 - [x] Ajouter les boutons Facebook et email
 - [x] Intégrer dans la page d'accueil
+
+## Comptage des visites
+- [x] Créer la table pour stocker les visites
+- [x] Ajouter une procédure pour enregistrer les visites
+- [x] Enregistrer automatiquement les visites sur la page d'accueil
+- [x] Afficher les statistiques de visites dans le back-office

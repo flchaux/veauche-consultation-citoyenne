@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -20,6 +20,12 @@ export default function Home() {
   const { data: response } = trpc.responses.getOrCreate.useQuery({ sessionId });
   const saveAnswerMutation = trpc.answers.save.useMutation();
   const completeResponseMutation = trpc.responses.complete.useMutation();
+  const recordPageViewMutation = trpc.pageViews.record.useMutation();
+
+  // Enregistrer la visite de la page (une seule fois au chargement)
+  useEffect(() => {
+    recordPageViewMutation.mutate();
+  }, []);
 
   const currentQuestion = questions[currentQuestionIndex];
   const totalQuestions = questions.length;

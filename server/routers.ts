@@ -85,6 +85,18 @@ export const appRouter = router({
       }),
   }),
 
+  // Page views tracking
+  pageViews: router({
+    record: publicProcedure.mutation(async () => {
+      await db.recordPageView();
+      return { success: true };
+    }),
+    
+    getTotal: publicProcedure.query(async () => {
+      return await db.getTotalPageViews();
+    }),
+  }),
+
   // Answers management
   answers: router({
     save: publicProcedure

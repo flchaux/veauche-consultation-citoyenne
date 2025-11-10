@@ -3,7 +3,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { FileDown, Users, CheckCircle, Clock } from "lucide-react";
+import { FileDown, Users, CheckCircle, Clock, Eye } from "lucide-react";
 import * as XLSX from "xlsx";
 
 import { useLocation } from "wouter";
@@ -23,6 +23,7 @@ export default function AnalyticsPage() {
   const { data: responses = [] } = trpc.responses.list.useQuery();
   const { data: questions = [] } = trpc.questions.list.useQuery();
   const { data: allAnswers = [] } = trpc.answers.getAll.useQuery();
+  const { data: totalPageViews = 0 } = trpc.pageViews.getTotal.useQuery();
 
   const totalResponses = responses.length;
   const completedResponses = responses.filter(r => r.completedAt !== null).length;
@@ -76,7 +77,18 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Métriques principales */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card className="border-l-4 border-l-purple-500">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Visites du site</CardTitle>
+              <Eye className="h-4 w-4 text-purple-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalPageViews}</div>
+              <p className="text-xs text-gray-600 mt-1">Nombre total de visites</p>
+            </CardContent>
+          </Card>
+
           <Card className="border-l-4 border-l-[#0D6EB2]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total des réponses</CardTitle>

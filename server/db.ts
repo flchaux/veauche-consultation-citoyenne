@@ -1,7 +1,7 @@
 import { eq, and, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { questions, responses, answers, InsertQuestion, InsertResponse, InsertAnswer } from "../drizzle/schema";
+import { questions, responses, answers, pageViews, InsertQuestion, InsertResponse, InsertAnswer } from "../drizzle/schema";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -131,4 +131,19 @@ export async function getAllAnswers() {
   const db = await getDb();
   if (!db) return [];
   return await db.select().from(answers);
+}
+
+// Page Views
+export async function recordPageView() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(pageViews).values({}).returning();
+  return result[0];
+}
+
+export async function getTotalPageViews() {
+  const db = await getDb();
+  if (!db) return 0;
+  const result = await db.select().from(pageViews);
+  return result.length;
 }
