@@ -95,6 +95,17 @@ export const appRouter = router({
     getTotal: publicProcedure.query(async () => {
       return await db.getTotalPageViews();
     }),
+    
+    getByDay: publicProcedure.query(async () => {
+      return await db.getPageViewsByDay();
+    }),
+  }),
+  
+  // Analytics data
+  analytics: router({
+    getResponsesByDay: publicProcedure.query(async () => {
+      return await db.getResponsesByDay();
+    }),
   }),
 
   // Answers management

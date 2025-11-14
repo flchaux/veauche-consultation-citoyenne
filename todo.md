@@ -128,3 +128,9 @@
 - [x] Ajouter une procédure pour enregistrer les visites
 - [x] Enregistrer automatiquement les visites sur la page d'accueil
 - [x] Afficher les statistiques de visites dans le back-office
+
+## Graphique d'évolution temporelle
+- [x] Ajouter les procédures pour récupérer les visites par jour
+- [x] Ajouter les procédures pour récupérer les réponses par jour
+- [x] Créer le composant graphique avec Recharts
+- [x] Intégrer le graphique dans la page Analytics
