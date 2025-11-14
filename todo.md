@@ -134,3 +134,6 @@
 - [x] Ajouter les procédures pour récupérer les réponses par jour
 - [x] Créer le composant graphique avec Recharts
 - [x] Intégrer le graphique dans la page Analytics
+
+## Bouton de contact dans le footer
+- [x] Ajouter un lien "Nous contacter" avec mailto dans le footer

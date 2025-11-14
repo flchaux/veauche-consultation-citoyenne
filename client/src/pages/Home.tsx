@@ -292,6 +292,10 @@ export default function Home() {
         <a href="/rgpd" className="hover:text-[#0D6EB2] underline mx-2">
           RGPD
         </a>
+        <span>|</span>
+        <a href="mailto:veauchemeritemieux@gmail.com" className="hover:text-[#0D6EB2] underline mx-2">
+          Nous contacter
+        </a>
       </footer>
     </div>
   );
