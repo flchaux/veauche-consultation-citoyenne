@@ -137,3 +137,7 @@
 
 ## Bouton de contact dans le footer
 - [x] Ajouter un lien "Nous contacter" avec mailto dans le footer
+
+## Amélioration UX chargement et footer
+- [x] Ajouter un loader pendant le chargement des questions
+- [x] Afficher le footer sur l'écran de remerciement final

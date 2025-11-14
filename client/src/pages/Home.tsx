@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2, Loader2 } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const { data: questions = [] } = trpc.questions.list.useQuery();
+  const { data: questions = [], isLoading } = trpc.questions.list.useQuery();
   const { data: response } = trpc.responses.getOrCreate.useQuery({ sessionId });
   const saveAnswerMutation = trpc.answers.save.useMutation();
   const completeResponseMutation = trpc.responses.complete.useMutation();
@@ -71,10 +71,23 @@ export default function Home() {
     return true;
   };
 
+  // Afficher le loader pendant le chargement
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-[#0D6EB2] mx-auto mb-4" />
+          <p className="text-gray-600">Chargement de la consultation...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-0 md:p-8">
-        <div className="max-w-2xl w-full bg-white md:rounded-lg shadow-lg p-6 md:p-12 text-center border-t-4 border-[#0D6EB2]">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-amber-50">
+        <div className="flex items-center justify-center p-0 md:p-8 min-h-screen">
+          <div className="max-w-2xl w-full bg-white md:rounded-lg shadow-lg p-6 md:p-12 text-center border-t-4 border-[#0D6EB2]">
           <div className="mb-6">
             <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-32 md:h-40 mx-auto mb-6" />
           </div>
@@ -89,6 +102,22 @@ export default function Home() {
             <ShareButtons />
           </div>
         </div>
+        </div>
+        
+        {/* Footer */}
+        <footer className="mt-8 py-4 text-center text-xs text-gray-500">
+          <a href="/mentions-legales" className="hover:text-[#0D6EB2] underline mx-2">
+            Mentions légales
+          </a>
+          <span>|</span>
+          <a href="/rgpd" className="hover:text-[#0D6EB2] underline mx-2">
+            RGPD
+          </a>
+          <span>|</span>
+          <a href="mailto:veauchemeritemieux@gmail.com" className="hover:text-[#0D6EB2] underline mx-2">
+            Nous contacter
+          </a>
+        </footer>
       </div>
     );
   }
