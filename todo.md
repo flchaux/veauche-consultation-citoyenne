@@ -141,3 +141,6 @@
 ## Amélioration UX chargement et footer
 - [x] Ajouter un loader pendant le chargement des questions
 - [x] Afficher le footer sur l'écran de remerciement final
+
+## Modification lieu et heure de présentation
+- [x] Changer "Centre Culturel Emile Pelletier" par "Relais de la Gare à 15h"
