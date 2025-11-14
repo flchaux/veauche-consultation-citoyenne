@@ -3,12 +3,11 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { FileDown, Users, CheckCircle, Clock, Eye, TrendingUp } from "lucide-react";
+import { FileDown, Users, CheckCircle, Clock, Eye } from "lucide-react";
 import * as XLSX from "xlsx";
 
 import { useLocation } from "wouter";
-import { useEffect, useMemo } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { useEffect } from "react";
 
 export default function AnalyticsPage() {
 
@@ -25,35 +24,16 @@ export default function AnalyticsPage() {
   const { data: questions = [] } = trpc.questions.list.useQuery();
   const { data: allAnswers = [] } = trpc.answers.getAll.useQuery();
   const { data: totalPageViews = 0 } = trpc.pageViews.getTotal.useQuery();
-  const { data: pageViewsByDay = [] } = trpc.pageViews.getByDay.useQuery();
-  const { data: responsesByDay = [] } = trpc.analytics.getResponsesByDay.useQuery();
 
-  const totalResponses = responses.length;
-  const completedResponses = responses.filter(r => r.completedAt !== null).length;
+  // Ne compter que les réponses qui ont au moins une question répondue
+  const responsesWithAnswers = responses.filter(r => {
+    return allAnswers.some(a => a.responseId === r.id && a.answerText && a.answerText.trim() !== '');
+  });
+  
+  const totalResponses = responsesWithAnswers.length;
+  const completedResponses = responsesWithAnswers.filter(r => r.completedAt !== null).length;
   const inProgressResponses = totalResponses - completedResponses;
   const completionRate = totalResponses > 0 ? Math.round((completedResponses / totalResponses) * 100) : 0;
-  
-  // Préparer les données pour le graphique
-  const chartData = useMemo(() => {
-    // Créer un map de toutes les dates
-    const allDates = new Set<string>();
-    pageViewsByDay.forEach(v => allDates.add(v.date));
-    responsesByDay.forEach(r => allDates.add(r.date));
-    
-    // Trier les dates
-    const sortedDates = Array.from(allDates).sort();
-    
-    // Créer les données combinées
-    return sortedDates.map(date => {
-      const views = pageViewsByDay.find(v => v.date === date)?.count || 0;
-      const responses = responsesByDay.find(r => r.date === date)?.count || 0;
-      return {
-        date: new Date(date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }),
-        visites: views,
-        réponses: responses,
-      };
-    });
-  }, [pageViewsByDay, responsesByDay]);
 
   const handleExport = () => {
     const exportData = responses.map((response) => {
@@ -147,68 +127,6 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
         </div>
-
-        {/* Graphique d'évolution temporelle */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-[#0D6EB2]" />
-              Évolution des visites et réponses
-            </CardTitle>
-            <CardDescription>Nombre de visites et de réponses complètes par jour</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {chartData.length === 0 ? (
-              <p className="text-center text-gray-600 py-8">Aucune donnée disponible</p>
-            ) : (
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                  <XAxis 
-                    dataKey="date" 
-                    stroke="#666"
-                    style={{ fontSize: '12px' }}
-                  />
-                  <YAxis 
-                    stroke="#666"
-                    style={{ fontSize: '12px' }}
-                    allowDecimals={false}
-                  />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#fff', 
-                      border: '1px solid #ddd',
-                      borderRadius: '8px',
-                      padding: '10px'
-                    }}
-                  />
-                  <Legend 
-                    wrapperStyle={{ paddingTop: '20px' }}
-                    iconType="line"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="visites" 
-                    stroke="#9333ea" 
-                    strokeWidth={2}
-                    dot={{ fill: '#9333ea', r: 4 }}
-                    activeDot={{ r: 6 }}
-                    name="Visites"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="réponses" 
-                    stroke="#0D6EB2" 
-                    strokeWidth={2}
-                    dot={{ fill: '#0D6EB2', r: 4 }}
-                    activeDot={{ r: 6 }}
-                    name="Réponses complètes"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            )}
-          </CardContent>
-        </Card>
 
         {/* Funnel de conversion */}
         <Card>

@@ -1,4 +1,4 @@
-import { eq, and, desc, isNotNull } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { questions, responses, answers, pageViews, InsertQuestion, InsertResponse, InsertAnswer } from "../drizzle/schema";
@@ -146,36 +146,4 @@ export async function getTotalPageViews() {
   if (!db) return 0;
   const result = await db.select().from(pageViews);
   return result.length;
-}
-
-export async function getPageViewsByDay() {
-  const db = await getDb();
-  if (!db) return [];
-  const result = await db.select().from(pageViews);
-  
-  // Grouper par jour
-  const byDay: Record<string, number> = {};
-  result.forEach(view => {
-    const date = new Date(view.createdAt).toISOString().split('T')[0];
-    byDay[date] = (byDay[date] || 0) + 1;
-  });
-  
-  return Object.entries(byDay).map(([date, count]) => ({ date, count }));
-}
-
-export async function getResponsesByDay() {
-  const db = await getDb();
-  if (!db) return [];
-  const result = await db.select().from(responses).where(isNotNull(responses.completedAt));
-  
-  // Grouper par jour
-  const byDay: Record<string, number> = {};
-  result.forEach(response => {
-    if (response.completedAt) {
-      const date = new Date(response.completedAt).toISOString().split('T')[0];
-      byDay[date] = (byDay[date] || 0) + 1;
-    }
-  });
-  
-  return Object.entries(byDay).map(([date, count]) => ({ date, count }));
 }
