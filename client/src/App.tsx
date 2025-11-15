@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import AdminSecret from "./pages/AdminSecret";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import ResponsesPage from "./pages/ResponsesPage";
 import AdminLogin from "./pages/AdminLogin";
 import MentionsLegales from "./pages/MentionsLegales";
 import RGPD from "./pages/RGPD";
@@ -18,8 +19,9 @@ function Router() {
       <Route path="/mentions-legales" component={MentionsLegales} />
       <Route path="/rgpd" component={RGPD} />
       <Route path="/admin-login" component={AdminLogin} />
-      <Route path="/admin-secret" component={AdminSecret} />
+      <Route path="/admin-secret" component={AnalyticsPage} />
       <Route path="/admin-secret/analytics" component={AnalyticsPage} />
+      <Route path="/admin-secret/responses" component={ResponsesPage} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

@@ -75,9 +75,7 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-0 md:p-8">
         <div className="max-w-2xl w-full bg-white md:rounded-lg shadow-lg p-6 md:p-12 text-center border-t-4 border-[#0D6EB2]">
-          <div className="mb-6">
-            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="h-32 md:h-40 mx-auto mb-6" />
-          </div>
+
           <div className="mb-6 flex justify-center">
             <CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-[#0D6EB2]" />
           </div>
@@ -98,8 +96,7 @@ export default function Home() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 p-0 md:p-8">
         <div className="max-w-4xl w-full bg-white md:rounded-lg shadow-lg p-6 md:p-8 border-t-4 border-[#0D6EB2]">
           <div className="mb-6 md:mb-8">
-            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="hidden md:block h-24 mx-auto mb-6" />
-            <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-screen md:w-full md:rounded-lg shadow-md max-h-32 md:max-h-none object-cover -mx-6 md:mx-0 relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] md:left-0 md:right-0 md:ml-0 md:mr-0 md:relative" />
+            <img src="/header-consultation.jpg" alt="Consultation citoyenne" className="w-screen md:w-full md:rounded-lg shadow-md max-h-32 md:max-h-none object-cover -mx-6 md:mx-0 relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] md:left-0 md:right-0 md:ml-0 md:mr-0 md:relative" />
           </div>
           <p className="text-center text-gray-600">
             Aucune question disponible pour le moment.
@@ -212,15 +209,14 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-amber-50">
       {/* Bannière en dehors du layout sur mobile */}
       <div className="md:hidden w-full">
-        <img src="/header-consultation.png" alt="Consultation citoyenne" className="w-full shadow-md object-cover" />
+        <img src="/header-consultation.jpg" alt="Consultation citoyenne" className="w-full shadow-md object-cover" />
       </div>
       
       <div className="flex items-center justify-center p-0 md:p-4 md:min-h-screen">
         <div className="max-w-4xl w-full bg-white md:rounded-lg shadow-lg p-4 md:p-8 border-t-4 md:border-t-4 border-t-0 border-[#0D6EB2]">
-          {/* Header avec logo et image pour desktop */}
+          {/* Header */}
           <div className="mb-4 md:mb-8">
-            <img src="/logo-veauche.png" alt="Veauche Mérite Mieux" className="hidden md:block h-24 mx-auto mb-6" />
-            <img src="/header-consultation.png" alt="Consultation citoyenne" className="hidden md:block w-full rounded-lg shadow-md mb-6 max-h-none object-cover" />
+            <img src="/header-consultation.jpg" alt="Consultation citoyenne" className="hidden md:block w-full rounded-lg shadow-md mb-6 max-h-none object-cover" />
           </div>
 
         {/* Barre de progression */}

@@ -131,3 +131,9 @@
 
 ## Modification comptage des réponses
 - [x] Ne compter que les réponses avec au moins une question répondue dans les statistiques
+
+## Refonte interface admin
+- [x] Remplacer le header par le nouveau
+- [x] Supprimer le logo au-dessus du header
+- [x] Créer une page de visualisation des réponses en accordéon
+- [x] Faire des stats la page d'accueil de l'admin
